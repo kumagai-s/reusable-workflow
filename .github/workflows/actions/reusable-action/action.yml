@@ -1,0 +1,32 @@
+name: reusable action
+
+on:
+  workflow_call:
+    inputs:
+      arg1:
+        description: 'arg1'
+        required: true
+        type: string
+      arg2:
+        description: 'arg2'
+        required: true
+        type: string
+      arg3:
+        description: 'arg3'
+        required: true
+        type: string
+
+jobs:
+  reuse-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echo secrets
+        run: |
+          echo "SECRET_VALUE: ${{ secrets.SECRET_VALUE }}"
+
+      - name: echo inputs
+        run: |
+          echo "arg1: ${{ inputs.arg1 }}"
+          echo "arg2: ${{ inputs.arg2 }}"
+          echo "arg3: ${{ inputs.arg3 }}"

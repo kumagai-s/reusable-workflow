@@ -1,0 +1,48 @@
+{
+  "prod": {
+    "job1": {
+      "arg1": "prod-job1-arg1-value",
+      "arg2": "prod-job1-arg2-value",
+      "arg3": "prod-job1-arg3-value"
+    },
+    "job2": {
+      "arg1": "prod-job2-arg1-value",
+      "arg2": "prod-job2-arg2-value",
+      "arg3": "prod-job2-arg3-value"
+    },
+    "job3": {
+      "arg1": "prod-job3-arg1-value",
+      "arg2": "prod-job3-arg2-value",
+      "arg3": "prod-job3-arg3-value"
+    }
+  },
+  "stag": {
+    "job1": {
+      "arg1": "stag-job1-arg1-value",
+      "arg2": "stag-job1-arg2-value",
+      "arg3": "stag-job1-arg3-value"
+    },
+    "job2": {
+      "arg1": "stag-job2-arg1-value",
+      "arg2": "stag-job2-arg2-value",
+      "arg3": "stag-job2-arg3-value"
+    },
+    "job3": {
+      "arg1": "stag-job3-arg1-value",
+      "arg2": "stag-job3-arg2-value",
+      "arg3": "stag-job3-arg3-value"
+    }
+  },
+  "test": {
+    "job1": {
+      "arg1": "test-job1-arg1-value",
+      "arg2": "test-job1-arg2-value",
+      "arg3": "test-job1-arg3-value"
+    },
+    "job3": {
+      "arg1": "test-job3-arg1-value",
+      "arg2": "test-job3-arg2-value",
+      "arg3": "test-job3-arg3-value"
+    }
+  }
+}
