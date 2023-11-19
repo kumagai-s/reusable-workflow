@@ -20,6 +20,8 @@ jobs:
   reuse-action:
     runs-on: ubuntu-latest
 
+    timeout-minutes: 10
+
     steps:
       - name: echo secrets
         run: |
