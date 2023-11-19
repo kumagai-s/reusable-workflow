@@ -16,31 +16,34 @@ on:
 
 concurrency: ${{ inputs.target-env }}
 
-env:
-  SECRET_KEY: >
-    ${{ 
-      (
-        inputs.target-env == 'prod'
-      ) 
-      && 'SECRET_VALUE_PROD' || 
-      (
-        inputs.target-env == 'stag'
-      ) 
-      && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
-    }}
-
 jobs:
+
+  define-secret-key:
+    runs-on: ubuntu-latest
+
+    outputs:
+      SECRET_KEY: >
+        ${{ 
+          (
+            inputs.target-env == 'prod'
+          ) 
+          && 'SECRET_VALUE_PROD' || 
+          (
+            inputs.target-env == 'stag'
+          ) 
+          && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
+        }}
 
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: echo secrets
+      - name: echo secret key
         run: |
-          echo "${{ env.SECRET_KEY }}"
+          echo "SECRET_KEY: ${{ needs.define-secret-key.outputs.SECRET_KEY }}"
 
   reuse-job1:
-    needs: test
+    needs: [test, define-secret-key]
 
     uses: ./.github/workflows/reusable-action.yml
     with:
@@ -48,10 +51,10 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
 
   reuse-job2:
-    needs: test
+    needs: [test, define-secret-key]
     
     if: inputs.target-env == 'prod' || inputs.target-env == 'stag'
 
@@ -61,10 +64,10 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
 
   reuse-job3:
-    needs: test
+    needs: [test, define-secret-key]
     
     uses: ./.github/workflows/reusable-action.yml
     with:
@@ -72,5 +75,5 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
           
