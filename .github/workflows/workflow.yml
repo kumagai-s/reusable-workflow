@@ -18,34 +18,16 @@ concurrency: ${{ inputs.target-env }}
 
 jobs:
 
-  define-secret-key:
-    runs-on: ubuntu-latest
-    outputs:
-      secret-key: ${{ steps.step1.outputs.secret-key }}
-    steps:
-      - id: step1
-        run: >
-          echo "secret-key=${{ 
-            (
-              inputs.target-env == 'prod'
-            ) 
-            && 'SECRET_VALUE_PROD' || 
-            (
-              inputs.target-env == 'stag'
-            ) 
-            && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
-          }}" >> $GITHUB_OUTPUT
-
   test:
     runs-on: ubuntu-latest
 
     steps:
       - name: echo secret key
         run: |
-          echo "SECRET_KEY: ${{ needs.define-secret-key.outputs.secret-key }}"
+          echo "test"
 
   reuse-job1:
-    needs: [test, define-secret-key]
+    needs: test
 
     uses: ./.github/workflows/reusable-action.yml
     with:
@@ -53,10 +35,20 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[inputs.target-env] }}
+      SECRET_VALUE: >
+        ${{ secrets[
+          (
+            inputs.target-env == 'prod'
+          )
+          && 'SECRET_VALUE_PROD' || 
+          (
+            inputs.target-env == 'stag'
+          )
+          && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
+        ] }}
 
   reuse-job2:
-    needs: [test, define-secret-key]
+    needs: test
     
     if: inputs.target-env == 'prod' || inputs.target-env == 'stag'
 
@@ -66,10 +58,20 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
+      SECRET_VALUE: >
+        ${{ secrets[
+          (
+            inputs.target-env == 'prod'
+          )
+          && 'SECRET_VALUE_PROD' || 
+          (
+            inputs.target-env == 'stag'
+          )
+          && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
+        ] }}
 
   reuse-job3:
-    needs: [test, define-secret-key]
+    needs: test
     
     uses: ./.github/workflows/reusable-action.yml
     with:
@@ -77,5 +79,15 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
+      SECRET_VALUE: >
+        ${{ secrets[
+          (
+            inputs.target-env == 'prod'
+          )
+          && 'SECRET_VALUE_PROD' || 
+          (
+            inputs.target-env == 'stag'
+          )
+          && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
+        ] }}
           
