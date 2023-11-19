@@ -15,6 +15,10 @@ on:
         description: 'arg3'
         required: true
         type: string
+    secrets:
+      SECRET_VALUE:
+        description: 'SECRET_VALUE'
+        required: true
 
 jobs:
   reuse-action:
