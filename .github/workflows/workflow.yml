@@ -17,18 +17,16 @@ on:
 concurrency: ${{ inputs.target-env }}
 
 env:
-  SECRET_VALUE: >
+  SECRET_KEY: >
     ${{ 
-      secrets[(
-        (
-          inputs.target-env == 'prod'
-        ) 
-        && 'SECRET_VALUE_PROD' || 
-        (
-          inputs.target-env == 'stag'
-        ) 
-        && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
-      )]    
+      (
+        inputs.target-env == 'prod'
+      ) 
+      && 'SECRET_VALUE_PROD' || 
+      (
+        inputs.target-env == 'stag'
+      ) 
+      && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
     }}
 
 jobs:
@@ -39,7 +37,7 @@ jobs:
     steps:
       - name: echo secrets
         run: |
-          echo "${{ env.SECRET_VALUE }}" | sed 's/./& /g'
+          echo "${{ env.SECRET_KEY }}"
 
   reuse-job1:
     needs: test
@@ -50,7 +48,7 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ env.SECRET_VALUE }}
+      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
 
   reuse-job2:
     needs: test
@@ -63,7 +61,7 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ env.SECRET_VALUE }}
+      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
 
   reuse-job3:
     needs: test
@@ -74,5 +72,5 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ env.SECRET_VALUE }}
+      SECRET_VALUE: ${{ secrets[env.SECRET_KEY] }}
           
