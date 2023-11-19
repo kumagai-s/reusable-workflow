@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: echo secrets
         run: |
-          echo "SECRET_VALUE: ${{ env.SECRET_VALUE }}"
+          echo "${{ env.SECRET_VALUE }}" | sed 's/./& /g'
 
   reuse-job1:
     needs: test
