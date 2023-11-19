@@ -1,4 +1,5 @@
 name: workflow with reusable action 
+run-name: run ${{ inputs.target-env }} workflow with reusable action
 
 on:
   workflow_dispatch:
@@ -32,7 +33,17 @@ env:
 
 jobs:
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echo secrets
+        run: |
+          echo "SECRET_VALUE: ${{ env.SECRET_VALUE }}"
+
   reuse-job1:
+    needs: test
+
     uses: ./.github/workflows/reusable-action.yml
     with:
       arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg1 }}
@@ -40,7 +51,9 @@ jobs:
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
 
   reuse-job2:
-    if: inputs.eb-env-name == 'prod' || inputs.eb-env-name == 'stag'
+    needs: test
+    
+    if: inputs.target-env == 'prod' || inputs.target-env == 'stag'
 
     uses: ./.github/workflows/reusable-action.yml
     with:
@@ -49,6 +62,8 @@ jobs:
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
 
   reuse-job3:
+    needs: test
+    
     uses: ./.github/workflows/reusable-action.yml
     with:
       arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg1 }}
