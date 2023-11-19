@@ -23,10 +23,6 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: echo secrets
-        run: |
-          echo "SECRET_VALUE: ${{ secrets.SECRET_VALUE }}"
-
       - name: echo inputs
         run: |
           echo "arg1: ${{ inputs.arg1 }}"
