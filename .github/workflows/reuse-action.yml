@@ -38,7 +38,8 @@ jobs:
       arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg1 }}
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
-    secrets: inherit
+    secrets:
+      SECRET_VALUE: ${{ env.SECRET_VALUE }}
 
   reuse-job2:
     if: inputs.eb-env-name == 'prod' || inputs.eb-env-name == 'stag'
@@ -48,7 +49,8 @@ jobs:
       arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg1 }}
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
-    secrets: inherit
+    secrets:
+      SECRET_VALUE: ${{ env.SECRET_VALUE }}
 
   reuse-job3:
     uses: ./.github/actions/reusable-action/action.yml@main
@@ -56,5 +58,6 @@ jobs:
       arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg1 }}
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
-    secrets: inherit
+    secrets:
+      SECRET_VALUE: ${{ env.SECRET_VALUE }}
           
