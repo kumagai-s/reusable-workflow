@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: echo secret key
         run: |
-          echo "SECRET_KEY: ${{ needs.define-secret-key.outputs.SECRET_KEY }}"
+          echo "SECRET_KEY: ${{ needs.define-secret-key.outputs.secret-key }}"
 
   reuse-job1:
     needs: [test, define-secret-key]
@@ -51,7 +51,7 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
 
   reuse-job2:
     needs: [test, define-secret-key]
@@ -64,7 +64,7 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
 
   reuse-job3:
     needs: [test, define-secret-key]
@@ -75,5 +75,5 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.SECRET_KEY] }}
+      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
           
