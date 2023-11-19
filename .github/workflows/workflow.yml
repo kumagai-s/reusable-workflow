@@ -20,9 +20,11 @@ jobs:
 
   define-secret-key:
     runs-on: ubuntu-latest
-
+    outputs:
+      secret-key: ${{ steps.step1.outputs.secret-key }}
     steps:
-      - run: >
+      - id: step1
+        run: >
           echo "secret-key=${{ 
             (
               inputs.target-env == 'prod'
