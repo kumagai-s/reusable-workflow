@@ -53,7 +53,7 @@ jobs:
       arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
       arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
     secrets:
-      SECRET_VALUE: ${{ secrets[needs.define-secret-key.outputs.secret-key] }}
+      SECRET_VALUE: ${{ secrets[inputs.target-env] }}
 
   reuse-job2:
     needs: [test, define-secret-key]
