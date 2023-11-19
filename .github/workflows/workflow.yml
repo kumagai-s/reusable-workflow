@@ -21,18 +21,18 @@ jobs:
   define-secret-key:
     runs-on: ubuntu-latest
 
-    outputs:
-      SECRET_KEY: >
-        ${{ 
-          (
-            inputs.target-env == 'prod'
-          ) 
-          && 'SECRET_VALUE_PROD' || 
-          (
-            inputs.target-env == 'stag'
-          ) 
-          && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
-        }}
+    steps:
+      - run: >
+          echo "secret-key=${{ 
+            (
+              inputs.target-env == 'prod'
+            ) 
+            && 'SECRET_VALUE_PROD' || 
+            (
+              inputs.target-env == 'stag'
+            ) 
+            && 'SECRET_VALUE_STAG' || 'SECRET_VALUE_TEST'
+          }}" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
