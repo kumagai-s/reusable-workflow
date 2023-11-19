@@ -40,9 +40,9 @@ jobs:
     steps:
       - uses: ./.github/actions/reusable-action/action.yml@main
         with:
-          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job1"].arg1 }}
-          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job1"].arg2 }}
-          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job1"].arg3 }}
+          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg1 }}
+          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg2 }}
+          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job1.arg3 }}
         secrets:
           SECRET_VALUE: ${{ env.SECRET_VALUE }}
 
@@ -56,9 +56,9 @@ jobs:
     steps:
       - uses: ./.github/actions/reusable-action/action.yml@main
         with:
-          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job2"].arg1 }}
-          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job2"].arg2 }}
-          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job2"].arg3 }}
+          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg1 }}
+          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg2 }}
+          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job2.arg3 }}
         secrets:
           SECRET_VALUE: ${{ env.SECRET_VALUE }}
 
@@ -70,9 +70,9 @@ jobs:
     steps:
       - uses: ./.github/actions/reusable-action/action.yml@main
         with:
-          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job3"].arg1 }}
-          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job3"].arg2 }}
-          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env]["job3"].arg3 }}
+          arg1: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg1 }}
+          arg2: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg2 }}
+          arg3: ${{ fromJSON(vars.CONSTANTS)[inputs.target-env].job3.arg3 }}
         secrets:
           SECRET_VALUE: ${{ env.SECRET_VALUE }}
           
